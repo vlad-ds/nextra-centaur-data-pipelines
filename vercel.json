@@ -1,0 +1,7 @@
+{
+    "functions": {
+      "pages/api/export.ts": {
+        "includeFiles": "pages/**/*.mdx"
+      }
+    }
+}

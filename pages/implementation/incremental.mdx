@@ -1,0 +1,68 @@
+# Incremental Processing
+
+Incremental processing is a technique where only new or modified data is processed in each pipeline run, significantly reducing processing time and resource usage.
+
+## Implementation Patterns
+
+### 1. Timestamp-based Processing
+
+```sql
+-- BigQuery incremental processing example
+MERGE INTO `project.dataset.target_table` T
+USING (
+  SELECT *
+  FROM `project.dataset.source_table`
+  WHERE last_modified_at > (
+    SELECT MAX(processed_timestamp)
+    FROM `project.dataset.processing_metadata`
+  )
+) S
+ON T.id = S.id
+WHEN MATCHED THEN
+  UPDATE SET col1 = S.col1, col2 = S.col2, updated_at = CURRENT_TIMESTAMP()
+WHEN NOT MATCHED THEN
+  INSERT (id, col1, col2, created_at, updated_at)
+  VALUES (S.id, S.col1, S.col2, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP())
+```
+
+### 2. Change Data Capture (CDC)
+
+Implementing CDC with BigQuery:
+1. Source system configuration
+2. CDC event capture
+3. Event processing and application
+
+## Metadata Management
+
+### Processing Control Table
+```sql
+CREATE TABLE `project.dataset.processing_metadata` (
+  table_name STRING,
+  last_processed_timestamp TIMESTAMP,
+  records_processed INT64,
+  status STRING,
+  updated_at TIMESTAMP
+);
+```
+
+## Error Handling
+
+1. Data validation checks
+2. Recovery mechanisms
+3. Retry logic
+4. Error logging and monitoring
+
+## Performance Optimization
+
+- Partition strategy selection
+- Clustering key optimization
+- Materialized view usage
+- Query optimization techniques
+
+## Best Practices
+
+1. Maintain detailed processing logs
+2. Implement idempotency
+3. Design for failure recovery
+4. Monitor processing metrics
+5. Implement data quality checks

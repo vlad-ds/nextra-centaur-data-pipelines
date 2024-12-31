@@ -1,0 +1,39 @@
+# Parallel Pipelines
+
+Parallel pipelines process multiple data streams or chunks simultaneously, significantly improving throughput and efficiency for large-scale data processing.
+
+## Types of Parallelism
+
+### 1. Data Parallelism
+```sql
+-- BigQuery example of data parallelism
+SELECT 
+  *,
+  CURRENT_TIMESTAMP() as processed_at
+FROM `project.dataset.large_table`
+WHERE MOD(ABS(FARM_FINGERPRINT(id)), 10) = @partition_id
+```
+
+### 2. Task Parallelism
+- Independent transformations run simultaneously
+- No data dependencies between parallel branches
+- Joins happen at consolidation points
+
+## Implementation Strategies
+
+### Partitioning Approaches
+1. Range Partitioning
+2. Hash Partitioning
+3. Time-based Partitioning
+
+### BigQuery-Specific Features
+- Automatic query parallelization
+- Slot management
+- Concurrent query optimization
+
+## Monitoring and Optimization
+
+- Track slot utilization
+- Monitor execution plans
+- Optimize partition strategies
+- Balance resource allocation

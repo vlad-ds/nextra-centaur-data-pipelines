@@ -1,0 +1,40 @@
+# Serial Pipelines
+
+Serial pipelines process data in a sequential manner, where each step depends on the completion of previous steps. This architecture is common in scenarios where data transformations must occur in a specific order.
+
+## Characteristics
+
+- Sequential execution of tasks
+- Strong dependencies between steps
+- Predictable data flow
+- Simple to understand and debug
+
+## Implementation Pattern
+
+```sql
+-- Example of serial processing in BigQuery
+WITH raw_data AS (
+  SELECT * FROM `project.dataset.source_table`
+),
+transformed_data AS (
+  SELECT 
+    id,
+    UPPER(name) as name,
+    processed_at
+  FROM raw_data
+),
+final_output AS (
+  SELECT 
+    *,
+    CURRENT_TIMESTAMP() as pipeline_timestamp
+  FROM transformed_data
+)
+SELECT * FROM final_output
+```
+
+## Best Practices
+
+1. Implement checkpointing
+2. Use transaction boundaries
+3. Design for failure recovery
+4. Monitor step completion times

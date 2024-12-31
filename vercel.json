@@ -1,7 +1,0 @@
-{
-    "functions": {
-      "api/export": {
-        "includeFiles": "pages/**/*"
-      }
-    }
-  }

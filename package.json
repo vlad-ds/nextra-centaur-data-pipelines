@@ -4,6 +4,7 @@
   "description": "Nextra docs template",
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/generateContentFile.js",
     "build": "next build",
     "start": "next start"
   },

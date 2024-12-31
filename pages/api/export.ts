@@ -50,6 +50,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   try {
+    console.log('Current working directory:', process.cwd());
     const pagesDir = path.join(process.cwd(), 'pages')
     const content = processDirectory(pagesDir)
     
